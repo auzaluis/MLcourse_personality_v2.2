@@ -37,3 +37,30 @@ DF$`Escribe tu edad exacta`
 is.na(DF$`Escribe tu edad exacta`)
 summary(is.na(DF$`Escribe tu edad exacta`))
 
+## Reemplazo con la media ----
+
+ifelse(test = is.na(DF$`Escribe tu edad exacta`),
+       yes = mean(DF$`Escribe tu edad exacta`, na.rm = T),
+       no = DF$`Escribe tu edad exacta`)
+
+DF2 <- DF %>% 
+  mutate(edad2 = ifelse(test = is.na(`Escribe tu edad exacta`),
+                        yes = mean(`Escribe tu edad exacta`, na.rm = T),
+                        no = `Escribe tu edad exacta`)) %>% 
+  relocate(edad2, .after = `Escribe tu edad exacta`)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
