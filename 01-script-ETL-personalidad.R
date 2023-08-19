@@ -165,7 +165,7 @@ for (elemento in frases) {
 
 ## Manipulación de data frames ----
 
-### Función select: columnas
+### Función select: columnas ----
 DF5 %>% select(Sexo)  #Usando tidyvere
 DF5[,"Sexo"]          #Usando sintaxis base
 
@@ -178,6 +178,133 @@ DF5 %>% select(!c("Marca temporal", "Sexo"))
 DF5 %>% select(starts_with("edad"))
 DF5 %>% select(ends_with("00"))
 DF5 %>% select(contains("edad"))
+
+
+
+### Función filter: filas ----
+DF5[DF5["Sexo"]=="Mujer", "Sexo"]
+DF5 %>%
+  filter(Sexo == "Mujer") %>% 
+  select(Sexo)
+
+
+DF5 %>%
+  filter(Sexo != "Hombre") %>% 
+  select(Sexo)
+
+DF5 %>%
+  filter(`Escribe tu edad exacta` >= 20) %>% 
+  select(`Escribe tu edad exacta`)
+
+DF5 %>%
+  filter(`Escribe tu edad exacta` >= 20,
+         Sexo == "Hombre") %>% 
+  select(`Escribe tu edad exacta`, Sexo)
+
+
+#Forma1: usando coma
+DF5 %>%
+  filter(`Escribe tu edad exacta` >= 18,
+         `Escribe tu edad exacta` <= 21) %>% 
+  select(`Escribe tu edad exacta`)
+
+#Forma2: usando &
+DF5 %>%
+  filter(`Escribe tu edad exacta` >= 18 &
+           `Escribe tu edad exacta` <= 21) %>% 
+  select(`Escribe tu edad exacta`)
+
+#Forma3: usando %in%
+DF5 %>%
+  filter(`Escribe tu edad exacta` %in% 18:21) %>% 
+  select(`Escribe tu edad exacta`)
+
+
+#Forma4: usando la sintaxis
+DF5[DF5["Escribe tu edad exacta"] >= 18 &
+      DF5["Escribe tu edad exacta"] <= 21,
+    "Escribe tu edad exacta"] 
+
+
+
+### Renombrado de columnas ----
+DF6 <- DF5
+
+#### APPS
+## Paso 1: Crear un vector con los nuevos nombres
+apps <- c("TikTok", "Instagram", "Facebook", "YouTube")
+
+## Paso 2: Renombrar
+colnames(DF6)[33:36] <- apps
+
+
+
+#### Frases
+## Paso 1: Crear un vector con los nuevos nombres
+frases2 <- frases %>% 
+  as_tibble() %>% 
+  separate(col = value,
+           into = c("NoSirve", "Sirve"),
+           sep = "\\[") %>% 
+  select("Sirve") %>% 
+  separate(col = Sirve,
+           into = c("Sirve", "NoSirve"),
+           sep = "\\]") %>% 
+  select("Sirve") %>% 
+  as_vector()
+
+## Paso 2: Renombrar
+colnames(DF6)[8:31] <- frases2
+
+
+### Pivotado ----
+#### Pivot longer
+DF7 <- DF6 %>%
+  select(`Marca temporal`, Sexo, apps) %>% 
+  pivot_longer(cols = apps, 
+               names_to = "app",
+               values_to = "time")
+
+
+
+#### Pivot wider
+DF8 <- DF7 %>% 
+  pivot_wider(names_from = "app",
+              values_from = "time")
+
+
+
+# (transformación de horas a num)
+
+# strsplit separa los textos
+strsplit(x = DF7$time, split = ":") %>% 
+  head()
+
+# transformación
+DF7$time <- sapply(X = strsplit(x = DF7$time, split = ":"),
+                   
+                   function(x) {
+                     x <- as.numeric(x)
+                     x[1] + x[2]/60 + x[3]/60^2
+                   })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
