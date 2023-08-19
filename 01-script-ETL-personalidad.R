@@ -153,27 +153,31 @@ DF5 <- DF4
 for (elemento in frases) {
   
   DF5[,elemento] <- ifelse(
-    
     test = DF5[,elemento] == "Totalmente verdadero" |
       DF5[,elemento] == "Un poco verdadero",
     yes = 1,
     no = 0
-    
-  )
+    )
   
 }
 
 
 
+## Manipulación de data frames ----
 
+### Función select: columnas
+DF5 %>% select(Sexo)  #Usando tidyvere
+DF5[,"Sexo"]          #Usando sintaxis base
 
+DF5 %>% select(Sexo, `Escribe tu edad exacta`)
+DF5[,c("Sexo", "Escribe tu edad exacta")]
 
+DF5 %>% select(-`Marca temporal`)
+DF5 %>% select(!c("Marca temporal", "Sexo"))
 
-
-
-
-
-
+DF5 %>% select(starts_with("edad"))
+DF5 %>% select(ends_with("00"))
+DF5 %>% select(contains("edad"))
 
 
 
