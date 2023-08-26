@@ -290,7 +290,20 @@ DF7$time <- sapply(X = strsplit(x = DF7$time, split = ":"),
 
 
 
+## Graficas con GGPLOT ----
 
+### Boxplots
+
+#boxplot feo
+boxplot(DF7$time, range = 2.5)
+
+
+
+#boxplot bonito
+DF7 %>% 
+  ggplot(mapping = aes(x = app,
+                       y = time)) +
+  geom_boxplot()
 
 
 
