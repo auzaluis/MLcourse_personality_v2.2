@@ -409,16 +409,49 @@ median(DF7$time)
 ### Boxplot
 boxplot
 
+DF7.1 <- DF7 %>% 
+  mutate(outlier = case_when(
+    
+    app == "Facebook"  & time > 10    ~ "SI",
+    app == "Instagram" & time > 13.28 ~ "SI",
+    app == "TikTok"    & time > 15.58 ~ "SI",
+    app == "YouTube"   & time > 8.18  ~ "SI",
+    .default = "NO"
+    
+  ))
 
 
 
+### Uso de group_by & summarise
+DF7.1 %>%
+  filter(outlier == "NO") %>%
+  group_by(app) %>% 
+  summarise(media = mean(time),
+            mediana = median(time),
+            desviación = sd(time),
+            min = min(time),
+            max = max(time))
 
 
 
+DF7.1 %>%
+  filter(outlier == "NO") %>%
+  group_by(app, Sexo) %>% 
+  summarise(media = mean(time)) %>% 
+  pivot_wider(names_from = Sexo,
+              values_from = media)
 
 
 
+### Valores normalizados
 
+DF7 %>% 
+  group_by(app) %>% 
+  mutate(time_z = scale(time),
+         outlier = ifelse(test = time_z > 2,
+                          yes = "SI",
+                          no = "NO")) %>% 
+  summarise(media = mean(time))
 
 
 
