@@ -302,7 +302,7 @@ boxplot(DF7$time, range = 2.5)
 #boxplot bonito
 library(plotly)
 
-ggplotly(
+boxplot <- ggplotly(
   
   DF7 %>% 
     
@@ -324,30 +324,6 @@ ggplotly(
 
 
 # Apertura por sexo
-
-ggplotly(
-  
-  DF7 %>% 
-    
-    ggplot(mapping = aes(x = app,
-                         y = time,
-                         fill = app)) +
-    geom_boxplot() +
-    
-    facet_wrap(~ Sexo) +
-    
-    theme_minimal() +
-    
-    labs(title = "Uso de apps en horas/semana",
-         y = "Horas/semana",
-         x = "") +
-    
-    theme(legend.position = "none",
-          panel.grid.major.x = element_blank())
-  
-)
-
-
 
 ggplotly(
   
@@ -393,6 +369,57 @@ ggplotly(
     theme(legend.position = "none")
   
 )
+
+
+
+## Gráfico de densidad
+
+DF7 %>% 
+  
+  ggplot(mapping = aes(x = time,
+                       fill = Sexo)) +
+  
+  geom_density(alpha = 0.75) +
+  
+  facet_wrap(~ app) +
+  
+  scale_fill_manual(values = c("#264653", "#e76f51")) +
+  
+  labs(title = "Distribución del consumo de apps",
+       subtitle = "Horas en los últimos 7 días",
+       caption = "Conclusión: Hombres heavy users en YouTube",
+       x = "Cantidad de horas") +
+  
+  theme_minimal() +
+  
+  theme(legend.position = "top",
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        legend.title = element_blank(),
+        plot.title = element_text(color = "#787878"),
+        plot.subtitle = element_text(color = "#787878"))
+
+mean(DF7$time)
+median(DF7$time)
+
+
+
+## Detección de outliers ----
+
+### Boxplot
+boxplot
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
