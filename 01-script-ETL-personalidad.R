@@ -300,12 +300,99 @@ boxplot(DF7$time, range = 2.5)
 
 
 #boxplot bonito
-DF7 %>% 
-  ggplot(mapping = aes(x = app,
-                       y = time)) +
-  geom_boxplot()
+library(plotly)
+
+ggplotly(
+  
+  DF7 %>% 
+    
+    ggplot(mapping = aes(x = app,
+                         y = time,
+                         fill = app)) +
+    geom_boxplot() +
+    
+    theme_classic() +
+    
+    labs(title = "Uso de apps en horas/semana",
+         y = "Horas/semana",
+         x = "") +
+    
+    theme(legend.position = "none")
+  
+)
 
 
+
+# Apertura por sexo
+
+ggplotly(
+  
+  DF7 %>% 
+    
+    ggplot(mapping = aes(x = app,
+                         y = time,
+                         fill = app)) +
+    geom_boxplot() +
+    
+    facet_wrap(~ Sexo) +
+    
+    theme_minimal() +
+    
+    labs(title = "Uso de apps en horas/semana",
+         y = "Horas/semana",
+         x = "") +
+    
+    theme(legend.position = "none",
+          panel.grid.major.x = element_blank())
+  
+)
+
+
+
+ggplotly(
+  
+  DF7 %>% 
+    
+    ggplot(mapping = aes(x = Sexo,
+                         y = time,
+                         fill = Sexo)) +
+    geom_boxplot() +
+    
+    facet_wrap(~ app, nrow = 1) +
+    
+    theme_minimal() +
+    
+    labs(title = "Uso de apps en horas/semana",
+         y = "Horas/semana",
+         x = "") +
+    
+    theme(legend.position = "none",
+          panel.grid.major.x = element_blank())
+  
+)
+
+
+
+# Gráfico de violin
+
+ggplotly(
+  
+  DF7 %>% 
+    
+    ggplot(mapping = aes(x = app,
+                         y = time,
+                         fill = app)) +
+    geom_violin() +
+    
+    theme_classic() +
+    
+    labs(title = "Uso de apps en horas/semana",
+         y = "Horas/semana",
+         x = "") +
+    
+    theme(legend.position = "none")
+  
+)
 
 
 
