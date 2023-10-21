@@ -203,8 +203,11 @@ tibble(
 
 DF11 <- DF6 %>% 
   
-  mutate(social = PCA.social$ind$coord*-1,
-         )
+  mutate(social       = PCA.social$ind$coord*-1,
+         introversion = PCA.introversion$ind$coord,
+         exito        = PCA.exito$ind$coord,
+         riesgo       = PCA.riesgo$ind$coord*-1,
+         valores      = PCA.valores$ind$coord)
 
 
 
