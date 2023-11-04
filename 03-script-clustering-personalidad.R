@@ -6,3 +6,11 @@ library(FactoMineR)
 dimensiones <- DF11 %>% 
   select(social:valores) %>% 
   colnames()
+
+
+
+# Clusterización
+
+clustering <- NbClust(
+  
+)
