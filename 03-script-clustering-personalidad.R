@@ -80,19 +80,62 @@ DF14
 FactoMineR::CA(DF14)
 
 
+## Cruzar por el consumo de apps
+
+### Convertir las horas en números
+### Creando función para convertir
+
+funct_conversion <- function(app) {
+  sapply(strsplit(app, split = ":"),
+         function(x) {
+           x <- as.numeric(x)
+           x[1] + x[2]/60 + x[3]/60^2
+         })
+}
 
 
 
+### Aplicar la función a las columnas apps
+
+DF15 <- DF13 %>% 
+  mutate_at(.vars = all_of(apps),
+            .funs = funct_conversion) %>% 
+  
+  # nombrar a los segmentos
+  mutate(segmento = case_when(
+    segmento == 1 ~ "ganadores",
+    segmento == 2 ~ "sociables",
+    segmento == 3 ~ "precavidos",
+    segmento == 4 ~ "tímidos",
+    segmento == 5 ~ "reservados",
+    .default = NA
+    
+  ))
 
 
 
+# Consumo de apps por segmento
+
+DF16 <- DF15 %>% 
+  group_by(segmento) %>% 
+  summarise_at(.vars = apps,
+               .funs = mean) %>% 
+  column_to_rownames("segmento")
+
+FactoMineR::CA(DF16)
 
 
 
+prop.table(
+  base::table(DF15$segmento, DF15$Sexo),
+  margin = 1
+)
 
 
-
-
+prop.table(
+  base::table(DF15$segmento, DF15$edad.gr),
+  margin = 1
+)
 
 
 
